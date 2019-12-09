@@ -1,7 +1,9 @@
 from flask import Flask, render_template, flash
 from flask_bootstrap import Bootstrap
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import Form
+from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
 
@@ -14,6 +16,7 @@ db = SQLAlchemy(app)
 
 
 class StudentEntity(db.Model):
+    __tablename__ = "students"
     student_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True)
     first_name = db.Column(db.String)
@@ -25,6 +28,26 @@ class StudentForm(Form):
     first_name = StringField("First Name: ", validators=[DataRequired(), Length(1, 16)])
     last_name = StringField("Last Name: ", validators=[DataRequired(), Length(1, 16)])
     register = SubmitField("Register")
+
+
+class UserEntity(UserMixin, db.Model):
+    __tablename__ = "users"
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True)
+    password_hash = db.Column(db.String)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def get_password_hash(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    @staticmethod
+    def register(username, password):
+        user = UserEntity(username=username)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
 
 
 class LoginForm(Form):
@@ -41,6 +64,9 @@ def setup_data():
         student_entity = StudentEntity(username="zavanton", first_name="Anton", last_name="Zaviyalov")
         db.session.add(student_entity)
         db.session.commit()
+    user_entity = UserEntity.query.filter_by(username="zavanton").first()
+    if user_entity is None:
+        UserEntity.register("zavanton", "1234")
 
 
 @app.route("/")
