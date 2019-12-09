@@ -1,12 +1,14 @@
 {% extends "bootstrap/base.html" %}
 
 {% block navbar %}
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav class="nav navbar-inverse" role="navigation">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
             <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('login') }}">Login</a></li>
             </ul>
         </div>
     </nav>
