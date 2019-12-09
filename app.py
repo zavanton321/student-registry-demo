@@ -14,5 +14,10 @@ def greet(user):
     return render_template("greet.html", user=user)
 
 
+@app.errorhandler(404)
+def handle_error(error):
+    return render_template("error.html", error=error)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
