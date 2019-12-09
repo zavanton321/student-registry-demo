@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 
 @app.route("/")
@@ -9,9 +11,9 @@ def home():
     return render_template("home.html", user=user)
 
 
-@app.route("/greet/<user>")
-def greet(user):
-    return render_template("greet.html", user=user)
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 
 @app.errorhandler(404)
