@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}Create Student{% endblock %}
+
+{% block page_content %}
+    <h1>Create Student</h1>
+    <div class="col-md-5">
+        <p>{{ wtf.quick_form(student_form) }}</p>
+
+        {{ macros.display_flashed_messages() }}
+
+    </div>
+
+{% endblock %}
