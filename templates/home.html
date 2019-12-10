@@ -4,4 +4,9 @@
 
 {% block page_content %}
     <h1>Home</h1>
+    {% if current_user.is_authenticated %}
+        <p>Hello, {{ current_user.username }}</p>
+    {% else %}
+        <p>Hello, guest!</p>
+    {% endif %}
 {% endblock %}
